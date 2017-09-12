@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BakingApp</string>
+
+    <string name="no_data">No data =(</string>
+
+    <!--Error-->
+    <string name="cant_upload_data">Unfortunately, we can\'t upload data, check internet connection.</string>
+    <string name="smth_went_wrong">Something went wrong, please check your internet connection and try again!</string>
+
+    <!--Content Description-->
+    <string name="cd_image_recipe">Recipe Image</string>
 </resources>
