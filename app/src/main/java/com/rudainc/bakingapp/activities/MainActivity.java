@@ -1,13 +1,11 @@
 package com.rudainc.bakingapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
 import com.rudainc.bakingapp.adapters.RecipesAdapter;
@@ -46,13 +44,17 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
         if (isOnline(this)) {
             getRecipes = new GetRecipes(this, this);
             getRecipes.execute();
-        } else
+        } else{
+            setNoUI();
             showSnackBar(getString(R.string.smth_went_wrong), true);
+        }
     }
 
     @Override
-    public void onClick(BakingSample bakingSample, ImageView view) {
-
+    public void onClick(BakingSample bakingSample) {
+        Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
+        intent.putExtra(RECIPE_DATA, bakingSample);
+        startActivity(intent);
     }
 
     @Override

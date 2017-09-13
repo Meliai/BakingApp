@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">BakingApp</string>
+    <string name="app_name">Baking Time</string>
 
     <string name="no_data">No data =(</string>
     <string name="servings" formatted="false">Servings: %s</string>
+    <string name="ingredients">Ingredients</string>
 
     <!--Error-->
     <string name="cant_upload_data">Unfortunately, we can\'t upload data, check internet connection.</string>

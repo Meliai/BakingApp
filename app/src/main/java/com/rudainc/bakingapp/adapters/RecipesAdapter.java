@@ -23,7 +23,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     private final RecipesAdapterOnClickHandler mClickHandler;
 
     public interface RecipesAdapterOnClickHandler {
-        void onClick(BakingSample bakingSample, ImageView view);
+        void onClick(BakingSample bakingSample);
     }
 
 
@@ -50,7 +50,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             BakingSample bakingSample = mData.get(adapterPosition);
-            mClickHandler.onClick(bakingSample, (ImageView) v);
+            mClickHandler.onClick(bakingSample);
         }
     }
 
@@ -83,11 +83,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     public void setData(ArrayList<BakingSample> bakingSamples) {
         this.mData.clear();
         mData = bakingSamples;
-        notifyDataSetChanged();
-    }
-
-      public void updateList(ArrayList<BakingSample> list) {
-        this.mData.addAll(list);
         notifyDataSetChanged();
     }
 

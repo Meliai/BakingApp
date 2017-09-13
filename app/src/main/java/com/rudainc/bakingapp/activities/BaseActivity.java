@@ -11,9 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.rudainc.bakingapp.R;
+import com.rudainc.bakingapp.utils.BakingKeys;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BakingKeys {
 
     private View mCustomSnackBarView;
 
