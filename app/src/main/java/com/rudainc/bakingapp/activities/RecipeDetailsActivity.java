@@ -1,5 +1,7 @@
 package com.rudainc.bakingapp.activities;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
+import com.rudainc.bakingapp.RecipeWidget;
 import com.rudainc.bakingapp.adapters.RecipeDetailsAdapter;
 import com.rudainc.bakingapp.adapters.RecipesAdapter;
 import com.rudainc.bakingapp.models.BakingSample;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RecipeDetailsActivity extends BaseActivity implements RecipeDetailsAdapter.OnStepsListener {
 
@@ -33,6 +37,18 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
 
     @BindView(R.id.tv_ingredients)
     TextView mIngredients;
+
+    private AppWidgetManager appWidgetManager;
+
+    @OnClick(R.id.fab)
+    void updateWidget(){
+//        Intent pickIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
+//        pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, "com.rudainc.bakingapp");
+//        startActivityForResult(pickIntent, 222);
+
+//        appWidgetManager.updateAppWidget(new ComponentName(this.getPackageName(),RecipeWidget.class.getName()), views);
+
+    }
 
     private String ingredients_text = "";
 

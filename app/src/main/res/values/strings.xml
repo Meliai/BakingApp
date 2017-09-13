@@ -11,4 +11,6 @@
 
     <!--Content Description-->
     <string name="cd_image_recipe">Recipe Image</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
