@@ -12,12 +12,14 @@
     android:layout_height="wrap_content"
     android:text="@string/ingredients"
     android:textColor="@color/colorGrey"
+    android:textSize="@dimen/text_size_16"
     android:layout_margin="@dimen/space16"/>
     <TextView
         android:id="@+id/tv_ingredients"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ingredients"
+        android:textSize="@dimen/text_size_18"
         android:textColor="@color/colorBlack"
         android:background="@drawable/view_with_pink_boarders"
         android:layout_marginLeft="@dimen/space16"

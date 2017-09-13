@@ -25,6 +25,8 @@ public class BakingSample implements Parcelable {
     protected BakingSample(Parcel in) {
         id = in.readInt();
         name = in.readString();
+        ingredients = in.readArrayList(Ingredient.class.getClassLoader());
+        steps = in.readArrayList(Step.class.getClassLoader());
         servings = in.readString();
         image = in.readString();
     }
@@ -65,6 +67,7 @@ public class BakingSample implements Parcelable {
         return image;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -74,6 +77,8 @@ public class BakingSample implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(name);
+        parcel.writeList(ingredients);
+        parcel.writeList(steps);
         parcel.writeString(servings);
         parcel.writeString(image);
     }

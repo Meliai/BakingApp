@@ -47,7 +47,7 @@ public class JsonUtils {
 
             JSONArray arrayIngredients = objectRecipe.getJSONArray("ingredients");
             for (int count_ingredients = 0; count_ingredients < arrayIngredients.length(); count_ingredients++) {
-                JSONObject objectIngredients = arrayIngredients.getJSONObject(i);
+                JSONObject objectIngredients = arrayIngredients.getJSONObject(count_ingredients);
                 ingredients.add(new Ingredient(
                         objectIngredients.getString("quantity"),
                         objectIngredients.getString("measure"),
@@ -56,13 +56,15 @@ public class JsonUtils {
 
             JSONArray arraySteps = objectRecipe.getJSONArray("steps");
             for (int count_steps = 0; count_steps < arraySteps.length(); count_steps++) {
-                JSONObject objectSteps = arraySteps.getJSONObject(i);
+                JSONObject objectSteps = arraySteps.getJSONObject(count_steps);
+                Log.i("STEPS utils",  objectSteps.getString("shortDescription"));
                 steps.add(new Step(
                         objectSteps.getInt("id"),
                         objectSteps.getString("shortDescription"),
                         objectSteps.getString("description"),
                         objectSteps.getString("videoURL"),
                         objectSteps.getString("thumbnailURL")));
+
             }
 
 

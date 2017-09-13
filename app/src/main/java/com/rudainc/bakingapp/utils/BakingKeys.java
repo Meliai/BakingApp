@@ -4,8 +4,9 @@ public interface BakingKeys {
 
     String RECIPE_DATA = "recipe_data";
 
-    int ITEM_INGREDIENTS = 111;
+    String RECIPE_NAME = "name";
 
-    int ITEM_STEPS = 222;
+    String STEPS = "steps";
+
 
 }

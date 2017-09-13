@@ -79,15 +79,10 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
         return mData.size();
     }
 
-
     public void setData(ArrayList<BakingSample> bakingSamples) {
         this.mData.clear();
         mData = bakingSamples;
         notifyDataSetChanged();
-    }
-
-    public ArrayList<BakingSample> getData() {
-        return mData;
     }
 
 }
