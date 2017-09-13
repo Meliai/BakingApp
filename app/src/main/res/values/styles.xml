@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="mCardView" parent="CardView">
+        <item name="cardBackgroundColor">@color/colorWhite</item>
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
 </resources>

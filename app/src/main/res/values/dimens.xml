@@ -4,6 +4,7 @@
     <dimen name="space32">32dp</dimen>
     <dimen name="space16">16dp</dimen>
     <dimen name="space8">8dp</dimen>
+    <dimen name="space2">2dp</dimen>
 
     <!--TextSizes-->
     <dimen name="text_size_24">24sp</dimen>
@@ -13,4 +14,6 @@
 
     <!--Images-->
     <dimen name="icons_24">24dp</dimen>
+    <dimen name="cardview_default_radius">2dp</dimen>
+
 </resources>

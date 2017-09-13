@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.rudainc.bakingapp.R;
 import com.rudainc.bakingapp.models.BakingSample;
 
@@ -33,10 +35,14 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
 
     public class RecipesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mRecipeImage;
+        public final TextView mRecipeName;
+        public final TextView mRecipeServings;
 
         public RecipesAdapterViewHolder(View view) {
             super(view);
             mRecipeImage = (ImageView) view.findViewById(R.id.iv_recipe_image);
+            mRecipeName = (TextView)view.findViewById(R.id.tv_recipe_name);
+            mRecipeServings = (TextView)view.findViewById(R.id.tv_recipe_servings) ;
             view.setOnClickListener(this);
         }
 
@@ -62,7 +68,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     @Override
     public void onBindViewHolder(RecipesAdapterViewHolder recipesAdapterViewHolder, int position) {
         BakingSample bakingSample = mData.get(position);
-
+        recipesAdapterViewHolder.mRecipeName.setText(bakingSample.getName());
+        recipesAdapterViewHolder.mRecipeServings.setText(String.format(context.getString(R.string.servings),bakingSample.getServings()));
+        Glide.with(context).load(bakingSample.getImage()).centerCrop().placeholder(R.mipmap.ic_cake).into(recipesAdapterViewHolder.mRecipeImage);
     }
 
     @Override

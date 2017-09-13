@@ -1,5 +1,7 @@
 package com.rudainc.bakingapp.async;
 
+import android.util.Log;
+
 import com.rudainc.bakingapp.models.BakingSample;
 import com.rudainc.bakingapp.models.Ingredient;
 import com.rudainc.bakingapp.models.Step;
@@ -8,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class JsonUtils {
@@ -17,43 +18,27 @@ public class JsonUtils {
             throws JSONException {
 
 
-        final String OWM_LIST = "results";
-        final String OWM_MESSAGE_CODE = "code";
-
-
         ArrayList<BakingSample> parsedData = null;
+        ArrayList<Ingredient> ingredients = null;
+        ArrayList<Step> steps = null;
 
-        JSONObject recipesJson = new JSONObject(jsonStr);
-
-        /* Is there an error? */
-        if (recipesJson.has(OWM_MESSAGE_CODE)) {
-            int errorCode = recipesJson.getInt(OWM_MESSAGE_CODE);
-
-            switch (errorCode) {
-                case HttpURLConnection.HTTP_OK:
-                    break;
-                case HttpURLConnection.HTTP_NOT_FOUND:
-                    /* Location invalid */
-                    return null;
-                default:
-                    /* Server probably down */
-                    return null;
-            }
-        }
-
-        JSONArray jsonArray = recipesJson.getJSONArray(OWM_LIST);
+        JSONArray recipesJson = new JSONArray(jsonStr);
 
         parsedData = new ArrayList<>();
+        ingredients = new ArrayList<>();
+        steps = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < recipesJson.length(); i++) {
             int id;
             String name;
-            ArrayList<Ingredient> ingredients = new ArrayList<>();
-            ArrayList<Step> steps = new ArrayList<>();
+            if (!ingredients.isEmpty())
+                ingredients.clear();
+            if (!steps.isEmpty())
+                steps.clear();
             String servings;
             String image;
 
-            JSONObject objectRecipe = jsonArray.getJSONObject(i);
+            JSONObject objectRecipe = recipesJson.getJSONObject(i);
 
             id = objectRecipe.getInt("id");
             name = objectRecipe.getString("name");
@@ -62,24 +47,27 @@ public class JsonUtils {
 
             JSONArray arrayIngredients = objectRecipe.getJSONArray("ingredients");
             for (int count_ingredients = 0; count_ingredients < arrayIngredients.length(); count_ingredients++) {
-                ingredients.add(i, new Ingredient(
-                        objectRecipe.getInt("quantity"),
-                        objectRecipe.getString("measure"),
-                        objectRecipe.getString("ingredient")));
+                JSONObject objectIngredients = arrayIngredients.getJSONObject(i);
+                ingredients.add(new Ingredient(
+                        objectIngredients.getString("quantity"),
+                        objectIngredients.getString("measure"),
+                        objectIngredients.getString("ingredient")));
             }
 
             JSONArray arraySteps = objectRecipe.getJSONArray("steps");
             for (int count_steps = 0; count_steps < arraySteps.length(); count_steps++) {
-                steps.add(i, new Step(
-                        objectRecipe.getInt("id"),
-                        objectRecipe.getString("shortDescription"),
-                        objectRecipe.getString("description"),
-                        objectRecipe.getString("videoURL"),
-                        objectRecipe.getString("thumbnailURL")));
+                JSONObject objectSteps = arraySteps.getJSONObject(i);
+                steps.add(new Step(
+                        objectSteps.getInt("id"),
+                        objectSteps.getString("shortDescription"),
+                        objectSteps.getString("description"),
+                        objectSteps.getString("videoURL"),
+                        objectSteps.getString("thumbnailURL")));
             }
 
 
-            parsedData.add(i, new BakingSample(id, name, ingredients, steps, servings, image));
+            parsedData.add(new BakingSample(id, name, ingredients, steps, servings, image));
+
         }
 
         return parsedData;

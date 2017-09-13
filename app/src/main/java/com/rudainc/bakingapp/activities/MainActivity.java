@@ -3,8 +3,10 @@ package com.rudainc.bakingapp.activities;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
@@ -23,11 +25,12 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
     @BindView(R.id.rv)
     RecyclerView rvRecipes;
 
-    @BindView(R.id.tv_no_data)
-    TextView tvNoData;
+    @BindView(R.id.no_data)
+    LinearLayout llNoData;
 
     private GetRecipes getRecipes;
     private RecipesAdapter recipesAdapter;
+    private OnGetDataCompleted onGetDataCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
         recipesAdapter = new RecipesAdapter(this, this);
         rvRecipes.setAdapter(recipesAdapter);
+
 
         if (isOnline(this)) {
             getRecipes = new GetRecipes(this, this);
@@ -52,26 +56,35 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
     }
 
     @Override
-    public void onGetDataCompleted(ArrayList<BakingSample> data) {
-        if (data != null) {
-            if (data.isEmpty())
-                setNoReviewsUI(getResources().getString(R.string.no_data));
-            recipesAdapter.setData(data);
-        } else {
-            showSnackBar(getString(R.string.smth_went_wrong), true);
-            setNoReviewsUI(getResources().getString(R.string.cant_upload_data));
-        }
+    public void onGetDataCompleted(final ArrayList<BakingSample> data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (data != null) {
+                    if (data.isEmpty())
+                        setNoUI();
+                    recipesAdapter.setData(data);
+                } else {
+                    showSnackBar(getString(R.string.smth_went_wrong), true);
+                    setNoUI();
+                }
+            }
+        });
     }
 
-    private void setNoReviewsUI(String text) {
-        tvNoData.setVisibility(View.VISIBLE);
-        tvNoData.setText(text);
+    private void setNoUI() {
+        llNoData.setVisibility(View.VISIBLE);
         rvRecipes.setVisibility(View.GONE);
     }
 
     @Override
-    public void onGetDataError(String message) {
-        showSnackBar(message, true);
-        setNoReviewsUI(getResources().getString(R.string.cant_upload_data));
+    public void onGetDataError(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showSnackBar(message, true);
+                setNoUI();
+            }
+        });
     }
 }

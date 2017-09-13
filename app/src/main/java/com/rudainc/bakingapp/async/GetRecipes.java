@@ -17,22 +17,19 @@ public class GetRecipes extends AsyncTask<Void, Void, ArrayList<BakingSample>> {
 
     public GetRecipes(Context context, OnGetDataCompleted listener) {
         this.context = context;
-
         this.listener = listener;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
     }
 
     @Override
     protected ArrayList<BakingSample> doInBackground(Void... params) {
-
         try {
             String jsonResponse = NetworkUtils
-                    .getResponseFromHttpUrl(new URL(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json" ).toString()));
+                    .getResponseFromHttpUrl(new URL(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json").toString()));
 
             return JsonUtils.getDataFromJson(jsonResponse);
 
@@ -41,11 +38,11 @@ public class GetRecipes extends AsyncTask<Void, Void, ArrayList<BakingSample>> {
             e.printStackTrace();
             return null;
         }
+
     }
 
     @Override
     protected void onPostExecute(ArrayList<BakingSample> bakingSamples) {
         listener.onGetDataCompleted(bakingSamples);
-
     }
 }
