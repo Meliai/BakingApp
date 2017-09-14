@@ -10,18 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
+import com.rudainc.bakingapp.fragments.StepDetailFragment;
 import com.rudainc.bakingapp.adapters.RecipeDetailsAdapter;
 import com.rudainc.bakingapp.models.BakingSample;
 import com.rudainc.bakingapp.models.Step;
 import com.rudainc.bakingapp.utils.BakingAppPreferences;
-import com.rudainc.bakingapp.widget.RecipeWidget;
 import com.rudainc.bakingapp.widget.WidgetService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static java.security.AccessController.getContext;
 
 public class RecipeDetailsActivity extends BaseActivity implements RecipeDetailsAdapter.OnStepsListener {
 
@@ -38,14 +36,10 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     TextView mIngredients;
 
     private AppWidgetManager appWidgetManager;
+    private boolean mTwoPane;
 
     @OnClick(R.id.fab)
     void updateWidget(){
-//        Intent pickIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
-//        pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, "com.rudainc.bakingapp");
-//        startActivityForResult(pickIntent, 222);
-
-//        appWidgetManager.updateAppWidget(new ComponentName(this.getPackageName(),RecipeWidget.class.getName()), views);
         BakingAppPreferences.setRecipeData(this, bakingSample.getName(),ingredients_text);
         WidgetService.startActionUpdateRecipeWidget(this);
     }
@@ -55,7 +49,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_list);
+        setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
 
         rvSteps.setLayoutManager(new LinearLayoutManager(this));
@@ -75,7 +69,15 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         } else
             setNoUI();
 
-
+        if (findViewById(R.id.step_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be
+            // in two-pane mode.
+            mTwoPane = true;
+            openDetails(bakingSample.getSteps().get(0));
+        }
     }
 
     private void setNoUI() {
@@ -85,9 +87,25 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
 
     @Override
     public void onItemClick(Step step) {
-        Intent intent = new Intent(RecipeDetailsActivity.this, StepsActivity.class);
-        intent.putExtra(RECIPE_NAME, bakingSample.getName());
-        intent.putExtra(STEPS, step);
-        startActivity(intent);
+        if (mTwoPane) {
+           openDetails(step);
+        } else {
+            Intent intent = new Intent(RecipeDetailsActivity.this, StepsActivity.class);
+            intent.putExtra(RECIPE_NAME, bakingSample.getName());
+            intent.putExtra(STEPS, step);
+            startActivity(intent);
+        }
+
+    }
+
+    private void openDetails(Step step) {
+        Bundle arguments = new Bundle();
+        arguments.putString(RECIPE_NAME, bakingSample.getName());
+        arguments.putParcelable(STEPS, step);
+        StepDetailFragment fragment = new StepDetailFragment();
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.step_detail_container, fragment)
+                .commit();
     }
 }

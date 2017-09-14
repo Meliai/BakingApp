@@ -1,8 +1,9 @@
 package com.rudainc.bakingapp.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
             int adapterPosition = getAdapterPosition();
             Step step = steps.get(adapterPosition);
             onStepsListener.onItemClick(step);
+
+            ((CardView)view).setCardBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryLight));
         }
     }
 
@@ -57,8 +60,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     @Override
     public void onBindViewHolder(StepsViewHolder holder, int position) {
         Step step = steps.get(position);
-        holder.mRecipeStep.setText((position+1)+". "+step.getShortDescription());
-
+        holder.mRecipeStep.setText(step.getShortDescription());
     }
 
     public void updateList(ArrayList<Step> stepArrayList) {

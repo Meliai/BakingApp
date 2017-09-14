@@ -1,8 +1,14 @@
-package com.rudainc.bakingapp.activities;
+package com.rudainc.bakingapp.fragments;
 
+import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -21,34 +27,45 @@ import com.google.android.exoplayer2.util.Util;
 import com.rudainc.bakingapp.R;
 import com.rudainc.bakingapp.models.Step;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import static com.rudainc.bakingapp.utils.BakingKeys.STEPS;
 
-public class StepsActivity extends BaseActivity{
+public class StepDetailFragment extends Fragment {
 
+    public static final String ARG_ITEM_ID = "item_id";
     private Step step;
 
-    @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
 
-    @BindView(R.id.step_description)
     TextView mStepDescription;
 
     private SimpleExoPlayer mExoPlayer;
     private PlaybackControlView playbackControlView;
+    private Activity activity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_details);
-        ButterKnife.bind(this);
+        activity  = getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_step_details, container, false);
+        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
+        mStepDescription = (TextView)rootView.findViewById(R.id.step_description);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                 (getResources(), R.drawable.no_videos_yet));
-
-        step = (Step) getIntent().getParcelableExtra(STEPS);
+        step = (Step) getArguments().getParcelable(STEPS);
         if (step != null) {
-            getSupportActionBar().setTitle(getIntent().getStringExtra(RECIPE_NAME));
+
             mStepDescription.setText(step.getDescription());
             if(!step.getVideoURL().isEmpty()) {
                 // Initialize the player.
@@ -57,7 +74,6 @@ public class StepsActivity extends BaseActivity{
                 initializePlayer(Uri.parse(step.getThumbnailURL()));
             }
         }
-
     }
 
     private void initializePlayer(Uri mediaUri) {
@@ -65,12 +81,12 @@ public class StepsActivity extends BaseActivity{
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(activity, trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(this, "BakingApp");
+            String userAgent = Util.getUserAgent(activity, "BakingApp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    this, userAgent), new DefaultExtractorsFactory(), null, null);
+                    activity, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
         }
@@ -87,7 +103,7 @@ public class StepsActivity extends BaseActivity{
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         releasePlayer();
     }
