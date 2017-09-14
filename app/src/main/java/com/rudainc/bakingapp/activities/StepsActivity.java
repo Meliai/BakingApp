@@ -1,8 +1,12 @@
 package com.rudainc.bakingapp.activities;
 
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -24,7 +28,7 @@ import com.rudainc.bakingapp.models.Step;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepsActivity extends BaseActivity{
+public class StepsActivity extends BaseActivity {
 
     private Step step;
 
@@ -40,7 +44,12 @@ public class StepsActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_details);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.activity_step_details);
+        } else {
+            setContentView(R.layout.activity_step_details);
+
+        }
         ButterKnife.bind(this);
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
@@ -50,13 +59,18 @@ public class StepsActivity extends BaseActivity{
         if (step != null) {
             getSupportActionBar().setTitle(getIntent().getStringExtra(RECIPE_NAME));
             mStepDescription.setText(step.getDescription());
-            if(!step.getVideoURL().isEmpty()) {
-                // Initialize the player.
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                mStepDescription.setVisibility(View.GONE);
+            if (!step.getVideoURL().isEmpty()) {
                 initializePlayer(Uri.parse(step.getVideoURL()));
-            }else {
+            } else if (!step.getThumbnailURL().isEmpty()) {
                 initializePlayer(Uri.parse(step.getThumbnailURL()));
+            } else {
+                mPlayerView.setVisibility(View.GONE);
+                mStepDescription.setVisibility(View.VISIBLE);
             }
         }
+
 
     }
 
@@ -89,6 +103,9 @@ public class StepsActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        releasePlayer();
+        if (mExoPlayer != null)
+            releasePlayer();
     }
+
+
 }

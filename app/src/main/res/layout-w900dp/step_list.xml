@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.rudainc.bakingapp.StepListActivity">
+    >
 
     <!--
     This layout is a two-pane layout for the Steps
@@ -19,7 +19,7 @@
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/rv"
+        android:id="@+id/rv_steps"
         android:name="com.rudainc.bakingapp.StepListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"

@@ -29,7 +29,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     @BindView(R.id.no_data)
     LinearLayout llNoData;
 
-    @BindView(R.id.rv)
+    @BindView(R.id.rv_steps)
     RecyclerView rvSteps;
 
     @BindView(R.id.tv_ingredients)
