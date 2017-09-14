@@ -4,6 +4,11 @@
     <string name="no_data">No data =(</string>
     <string name="servings" formatted="false">Servings: %s</string>
     <string name="ingredients">Ingredients</string>
+    <string name="title_step_list">Steps</string>
+    <string name="title_step_detail">Step Detail</string>
+    <string name="no_ingredients">No Ingredients</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
     <!--Error-->
     <string name="cant_upload_data">Unfortunately, we can\'t upload data, check internet connection.</string>
@@ -11,6 +16,6 @@
 
     <!--Content Description-->
     <string name="cd_image_recipe">Recipe Image</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="image_no_data">Funny image for no data</string>
+    <string name="widget_background">BakingApp Widget Background</string>
 </resources>

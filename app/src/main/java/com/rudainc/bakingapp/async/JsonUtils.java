@@ -19,22 +19,19 @@ public class JsonUtils {
 
 
         ArrayList<BakingSample> parsedData = null;
-        ArrayList<Ingredient> ingredients = null;
-        ArrayList<Step> steps = null;
+        ArrayList<Ingredient> ingredients;
+        ArrayList<Step> steps;
 
         JSONArray recipesJson = new JSONArray(jsonStr);
 
         parsedData = new ArrayList<>();
-        ingredients = new ArrayList<>();
-        steps = new ArrayList<>();
+
 
         for (int i = 0; i < recipesJson.length(); i++) {
             int id;
             String name;
-            if (!ingredients.isEmpty())
-                ingredients.clear();
-            if (!steps.isEmpty())
-                steps.clear();
+            ingredients = new ArrayList<>();
+            steps = new ArrayList<>();
             String servings;
             String image;
 
@@ -57,7 +54,6 @@ public class JsonUtils {
             JSONArray arraySteps = objectRecipe.getJSONArray("steps");
             for (int count_steps = 0; count_steps < arraySteps.length(); count_steps++) {
                 JSONObject objectSteps = arraySteps.getJSONObject(count_steps);
-                Log.i("STEPS utils",  objectSteps.getString("shortDescription"));
                 steps.add(new Step(
                         objectSteps.getInt("id"),
                         objectSteps.getString("shortDescription"),
@@ -68,7 +64,7 @@ public class JsonUtils {
             }
 
 
-            parsedData.add(new BakingSample(id, name, ingredients, steps, servings, image));
+            parsedData.add(i,new BakingSample(id, name, ingredients, steps, servings, image));
 
         }
 

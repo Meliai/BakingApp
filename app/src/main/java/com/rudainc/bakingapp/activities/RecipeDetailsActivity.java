@@ -1,28 +1,27 @@
 package com.rudainc.bakingapp.activities;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
-import com.rudainc.bakingapp.RecipeWidget;
 import com.rudainc.bakingapp.adapters.RecipeDetailsAdapter;
-import com.rudainc.bakingapp.adapters.RecipesAdapter;
 import com.rudainc.bakingapp.models.BakingSample;
 import com.rudainc.bakingapp.models.Step;
-
-import java.util.ArrayList;
+import com.rudainc.bakingapp.utils.BakingAppPreferences;
+import com.rudainc.bakingapp.widget.RecipeWidget;
+import com.rudainc.bakingapp.widget.WidgetService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static java.security.AccessController.getContext;
 
 public class RecipeDetailsActivity extends BaseActivity implements RecipeDetailsAdapter.OnStepsListener {
 
@@ -47,7 +46,8 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
 //        startActivityForResult(pickIntent, 222);
 
 //        appWidgetManager.updateAppWidget(new ComponentName(this.getPackageName(),RecipeWidget.class.getName()), views);
-
+        BakingAppPreferences.setRecipeData(this, bakingSample.getName(),ingredients_text);
+        WidgetService.startActionUpdateRecipeWidget(this);
     }
 
     private String ingredients_text = "";
@@ -55,7 +55,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_step_list);
         ButterKnife.bind(this);
 
         rvSteps.setLayoutManager(new LinearLayoutManager(this));

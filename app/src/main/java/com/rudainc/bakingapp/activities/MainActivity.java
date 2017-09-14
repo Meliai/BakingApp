@@ -1,7 +1,9 @@
 package com.rudainc.bakingapp.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,6 +31,7 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
     private GetRecipes getRecipes;
     private RecipesAdapter recipesAdapter;
     private OnGetDataCompleted onGetDataCompleted;
+    private LinearLayoutManager ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,14 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ll = new LinearLayoutManager(this);
+            rvRecipes.setLayoutManager(ll);
+        } else {
+            ll = new GridLayoutManager(this, 2);
+            rvRecipes.setLayoutManager(ll);
+        }
+
         recipesAdapter = new RecipesAdapter(this, this);
         rvRecipes.setAdapter(recipesAdapter);
 
