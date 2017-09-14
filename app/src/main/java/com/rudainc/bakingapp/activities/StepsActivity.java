@@ -4,8 +4,6 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
@@ -53,7 +51,7 @@ public class StepsActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-                (getResources(), R.drawable.no_videos_yet));
+                (getResources(), R.drawable.no_video));
 
         step = (Step) getIntent().getParcelableExtra(STEPS);
         if (step != null) {

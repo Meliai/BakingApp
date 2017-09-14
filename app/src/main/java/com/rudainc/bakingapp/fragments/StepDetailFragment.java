@@ -62,7 +62,7 @@ public class StepDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-                (getResources(), R.drawable.no_videos_yet));
+                (getResources(), R.drawable.no_video));
         step = (Step) getArguments().getParcelable(STEPS);
         if (step != null) {
 
