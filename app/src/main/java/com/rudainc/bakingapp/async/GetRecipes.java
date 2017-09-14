@@ -1,6 +1,5 @@
 package com.rudainc.bakingapp.async;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -12,17 +11,9 @@ import java.util.ArrayList;
 public class GetRecipes extends AsyncTask<Void, Void, ArrayList<BakingSample>> {
 
     private OnGetDataCompleted listener;
-    private Context context;
 
-
-    public GetRecipes(Context context, OnGetDataCompleted listener) {
-        this.context = context;
+    public GetRecipes(OnGetDataCompleted listener) {
         this.listener = listener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override

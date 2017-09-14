@@ -69,10 +69,6 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
         notifyDataSetChanged();
     }
 
-    public void setOnStepsListener(OnStepsListener onStepsListener) {
-        this.onStepsListener = onStepsListener;
-    }
-
     public interface OnStepsListener {
         void onItemClick(Step step);
     }

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/divider"
-    tools:context="com.rudainc.bakingapp.activities.MainActivity">
+    tools:context="com.rudainc.bakingapp.activities.MainActivity"
+    android:id="@+id/root">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -32,7 +33,8 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_ghost" />
+                android:src="@drawable/ic_ghost"
+                android:contentDescription="@string/image_no_data"/>
 
             <TextView
 

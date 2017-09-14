@@ -1,7 +1,5 @@
 package com.rudainc.bakingapp.async;
 
-import android.util.Log;
-
 import com.rudainc.bakingapp.models.BakingSample;
 import com.rudainc.bakingapp.models.Ingredient;
 import com.rudainc.bakingapp.models.Step;
@@ -12,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class JsonUtils {
+public final class JsonUtils {
 
     public static ArrayList<BakingSample> getDataFromJson(String jsonStr)
             throws JSONException {

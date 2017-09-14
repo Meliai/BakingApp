@@ -1,17 +1,19 @@
 package com.rudainc.bakingapp.activities;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rudainc.bakingapp.R;
-import com.rudainc.bakingapp.fragments.StepDetailFragment;
 import com.rudainc.bakingapp.adapters.RecipeDetailsAdapter;
+import com.rudainc.bakingapp.fragments.StepDetailFragment;
 import com.rudainc.bakingapp.models.BakingSample;
 import com.rudainc.bakingapp.models.Step;
 import com.rudainc.bakingapp.utils.BakingAppPreferences;
@@ -23,8 +25,8 @@ import butterknife.OnClick;
 
 public class RecipeDetailsActivity extends BaseActivity implements RecipeDetailsAdapter.OnStepsListener {
 
+    private static final String SCROLL_POSITION = "scroll_position";
     private BakingSample bakingSample;
-    private RecipeDetailsAdapter recipeDetailsAdapter;
 
     @BindView(R.id.no_data)
     LinearLayout llNoData;
@@ -35,7 +37,6 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     @BindView(R.id.tv_ingredients)
     TextView mIngredients;
 
-    private AppWidgetManager appWidgetManager;
     private boolean mTwoPane;
 
     @OnClick(R.id.fab)
@@ -46,6 +47,8 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
 
     private String ingredients_text = "";
 
+    @BindView(R.id.root)
+    NestedScrollView root;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         ButterKnife.bind(this);
 
         rvSteps.setLayoutManager(new LinearLayoutManager(this));
-        recipeDetailsAdapter = new RecipeDetailsAdapter(this, this);
+        RecipeDetailsAdapter recipeDetailsAdapter = new RecipeDetailsAdapter(this, this);
         rvSteps.setAdapter(recipeDetailsAdapter);
         rvSteps.setFocusable(false);
 
@@ -77,6 +80,17 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
             // in two-pane mode.
             mTwoPane = true;
             openDetails(bakingSample.getSteps().get(0));
+        }
+
+        if (savedInstanceState != null) {
+            final int pos = savedInstanceState.getInt(SCROLL_POSITION);
+            Log.i(SCROLL_POSITION, pos +"");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    root.smoothScrollTo(0, pos);
+                }
+            }, 200);
         }
     }
 
@@ -107,5 +121,11 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.step_detail_container, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putFloat(SCROLL_POSITION, rvSteps.getY());
     }
 }

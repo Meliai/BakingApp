@@ -28,9 +28,7 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
     @BindView(R.id.no_data)
     LinearLayout llNoData;
 
-    private GetRecipes getRecipes;
     private RecipesAdapter recipesAdapter;
-    private OnGetDataCompleted onGetDataCompleted;
     private LinearLayoutManager ll;
 
     @Override
@@ -52,7 +50,7 @@ public class MainActivity extends BaseActivity implements RecipesAdapter.Recipes
 
 
         if (isOnline(this)) {
-            getRecipes = new GetRecipes(this, this);
+            GetRecipes getRecipes = new GetRecipes(this);
             getRecipes.execute();
         } else{
             setNoUI();

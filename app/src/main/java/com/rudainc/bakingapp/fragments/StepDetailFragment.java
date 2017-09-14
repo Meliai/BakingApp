@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -31,15 +30,11 @@ import static com.rudainc.bakingapp.utils.BakingKeys.STEPS;
 
 public class StepDetailFragment extends Fragment {
 
-    public static final String ARG_ITEM_ID = "item_id";
-    private Step step;
-
     SimpleExoPlayerView mPlayerView;
 
     TextView mStepDescription;
 
     private SimpleExoPlayer mExoPlayer;
-    private PlaybackControlView playbackControlView;
     private Activity activity;
 
     @Override
@@ -63,7 +58,7 @@ public class StepDetailFragment extends Fragment {
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                 (getResources(), R.drawable.no_video));
-        step = (Step) getArguments().getParcelable(STEPS);
+        Step step = (Step) getArguments().getParcelable(STEPS);
         if (step != null) {
 
             mStepDescription.setText(step.getDescription());

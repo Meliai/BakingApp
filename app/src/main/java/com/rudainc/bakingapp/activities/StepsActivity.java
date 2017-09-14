@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +17,6 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 
 public class StepsActivity extends BaseActivity {
 
-    private Step step;
+    private static final String PLAYER_POSITION = "player_position";
 
     @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
@@ -37,7 +37,6 @@ public class StepsActivity extends BaseActivity {
     TextView mStepDescription;
 
     private SimpleExoPlayer mExoPlayer;
-    private PlaybackControlView playbackControlView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +52,27 @@ public class StepsActivity extends BaseActivity {
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                 (getResources(), R.drawable.no_video));
 
-        step = (Step) getIntent().getParcelableExtra(STEPS);
+        Step step = (Step) getIntent().getParcelableExtra(STEPS);
         if (step != null) {
             getSupportActionBar().setTitle(getIntent().getStringExtra(RECIPE_NAME));
             mStepDescription.setText(step.getDescription());
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 mStepDescription.setVisibility(View.GONE);
+
             if (!step.getVideoURL().isEmpty()) {
                 initializePlayer(Uri.parse(step.getVideoURL()));
             } else if (!step.getThumbnailURL().isEmpty()) {
                 initializePlayer(Uri.parse(step.getThumbnailURL()));
             } else {
-                mPlayerView.setVisibility(View.GONE);
                 mStepDescription.setVisibility(View.VISIBLE);
             }
         }
 
+
+//        if (savedInstanceState != null) {
+//            final long pos = savedInstanceState.getLong(PLAYER_POSITION);
+//            mExoPlayer.seekTo(pos);
+//        }
 
     }
 
@@ -99,11 +103,19 @@ public class StepsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mExoPlayer != null)
+    protected void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
             releasePlayer();
+        }
     }
 
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(PLAYER_POSITION, mExoPlayer.getCurrentPosition());
+        Log.i(PLAYER_POSITION, mExoPlayer.getCurrentPosition() + "");
+    }
 }
