@@ -53,6 +53,8 @@ public class StepsDetailsActivity extends BaseActivity {
 
         }
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             mStepDescription.setVisibility(View.GONE);
@@ -79,14 +81,20 @@ public class StepsDetailsActivity extends BaseActivity {
 
 
         if (savedInstanceState != null) {
-           initializePlayer(Uri.parse(savedInstanceState.getString(VIDEO_URL)));
+            url = savedInstanceState.getString(VIDEO_URL);
+           initializePlayer(Uri.parse(url));
             position = savedInstanceState.getLong(VIDEO_POSITION);
             mExoPlayer.seekTo((int)position);
         }
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializePlayer(Uri.parse(url));
+        mExoPlayer.seekTo((int)position);
+    }
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {

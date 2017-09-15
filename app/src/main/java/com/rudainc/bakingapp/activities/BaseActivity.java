@@ -47,4 +47,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BakingKe
         return (netInfo != null && netInfo.isConnected());
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

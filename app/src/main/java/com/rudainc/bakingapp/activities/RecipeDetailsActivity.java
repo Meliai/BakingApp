@@ -56,6 +56,9 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         rvSteps.setLayoutManager(new LinearLayoutManager(this));
         recipeDetailsAdapter = new RecipeDetailsAdapter(this, this);
         rvSteps.setAdapter(recipeDetailsAdapter);

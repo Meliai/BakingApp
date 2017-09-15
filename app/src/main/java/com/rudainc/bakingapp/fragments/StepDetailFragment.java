@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public class StepDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity  = getActivity();
+        ((AppCompatActivity)activity).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) activity).getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -49,6 +52,7 @@ public class StepDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_step_details, container, false);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
         mStepDescription = (TextView)rootView.findViewById(R.id.step_description);
+
         return rootView;
     }
 
