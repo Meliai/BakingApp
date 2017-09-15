@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -29,6 +30,7 @@ import butterknife.ButterKnife;
 public class StepsDetailsActivity extends BaseActivity {
 
     private static final String VIDEO_URL = "url";
+    private static final String VIDEO_POSITION = "video_position";
 
     @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
@@ -39,6 +41,7 @@ public class StepsDetailsActivity extends BaseActivity {
     private SimpleExoPlayer mExoPlayer;
 
     private String url = "";
+    private long position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,8 @@ public class StepsDetailsActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
            initializePlayer(Uri.parse(savedInstanceState.getString(VIDEO_URL)));
+            position = savedInstanceState.getLong(VIDEO_POSITION);
+            mExoPlayer.seekTo((int)position);
         }
 
     }
@@ -104,15 +109,18 @@ public class StepsDetailsActivity extends BaseActivity {
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (mExoPlayer != null) {
+            position = mExoPlayer.getCurrentPosition();
             releasePlayer();
         }
     }
@@ -121,5 +129,6 @@ public class StepsDetailsActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(VIDEO_URL, url);
+        outState.putLong(VIDEO_POSITION,position);
     }
 }
