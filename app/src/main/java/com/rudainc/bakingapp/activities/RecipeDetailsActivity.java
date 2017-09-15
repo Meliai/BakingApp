@@ -38,6 +38,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     TextView mIngredients;
 
     private boolean mTwoPane;
+    private RecipeDetailsAdapter recipeDetailsAdapter;
 
     @OnClick(R.id.fab)
     void updateWidget(){
@@ -56,7 +57,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         ButterKnife.bind(this);
 
         rvSteps.setLayoutManager(new LinearLayoutManager(this));
-        RecipeDetailsAdapter recipeDetailsAdapter = new RecipeDetailsAdapter(this, this);
+        recipeDetailsAdapter = new RecipeDetailsAdapter(this, this);
         rvSteps.setAdapter(recipeDetailsAdapter);
         rvSteps.setFocusable(false);
 
@@ -104,7 +105,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         if (mTwoPane) {
            openDetails(step);
         } else {
-            Intent intent = new Intent(RecipeDetailsActivity.this, StepsActivity.class);
+            Intent intent = new Intent(RecipeDetailsActivity.this, StepsDetailsActivity.class);
             intent.putExtra(RECIPE_NAME, bakingSample.getName());
             intent.putExtra(STEPS, step);
             startActivity(intent);

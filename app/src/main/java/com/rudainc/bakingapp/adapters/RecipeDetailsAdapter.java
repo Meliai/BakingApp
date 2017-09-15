@@ -41,8 +41,6 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
             int adapterPosition = getAdapterPosition();
             Step step = steps.get(adapterPosition);
             onStepsListener.onItemClick(step);
-
-            ((CardView)view).setCardBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryLight));
         }
     }
 

@@ -102,4 +102,12 @@ public class StepDetailFragment extends Fragment {
         super.onDestroy();
         releasePlayer();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            releasePlayer();
+        }
+    }
 }

@@ -26,9 +26,9 @@ import com.rudainc.bakingapp.models.Step;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepsActivity extends BaseActivity {
+public class StepsDetailsActivity extends BaseActivity {
 
-    private static final String PLAYER_POSITION = "player_position";
+    private static final String VIDEO_URL = "url";
 
     @BindView(R.id.playerView)
     SimpleExoPlayerView mPlayerView;
@@ -37,6 +37,8 @@ public class StepsActivity extends BaseActivity {
     TextView mStepDescription;
 
     private SimpleExoPlayer mExoPlayer;
+
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class StepsActivity extends BaseActivity {
         }
         ButterKnife.bind(this);
 
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            mStepDescription.setVisibility(View.GONE);
+
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                 (getResources(), R.drawable.no_video));
 
@@ -56,25 +61,27 @@ public class StepsActivity extends BaseActivity {
         if (step != null) {
             getSupportActionBar().setTitle(getIntent().getStringExtra(RECIPE_NAME));
             mStepDescription.setText(step.getDescription());
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                mStepDescription.setVisibility(View.GONE);
 
             if (!step.getVideoURL().isEmpty()) {
-                initializePlayer(Uri.parse(step.getVideoURL()));
+                url = step.getVideoURL();
+                initializePlayer(Uri.parse(url));
             } else if (!step.getThumbnailURL().isEmpty()) {
-                initializePlayer(Uri.parse(step.getThumbnailURL()));
+                url = step.getVideoURL();
+                initializePlayer(Uri.parse(url));
             } else {
+                url = "";
                 mStepDescription.setVisibility(View.VISIBLE);
             }
         }
 
 
-//        if (savedInstanceState != null) {
-//            final long pos = savedInstanceState.getLong(PLAYER_POSITION);
-//            mExoPlayer.seekTo(pos);
-//        }
+        if (savedInstanceState != null) {
+           initializePlayer(Uri.parse(savedInstanceState.getString(VIDEO_URL)));
+        }
 
     }
+
+
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
@@ -110,12 +117,9 @@ public class StepsActivity extends BaseActivity {
         }
     }
 
-
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(PLAYER_POSITION, mExoPlayer.getCurrentPosition());
-        Log.i(PLAYER_POSITION, mExoPlayer.getCurrentPosition() + "");
+        outState.putString(VIDEO_URL, url);
     }
 }
